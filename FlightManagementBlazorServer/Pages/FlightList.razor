@@ -1,0 +1,46 @@
+﻿@page "/"
+@using FlightManagementBlazorServer.Services
+@inject FlightService _flightService;
+
+
+<h3>Flights</h3>
+@if(Flights == null)
+{
+    <div>Loading...</div>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Number</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Carrier</th>
+                <th>Airport to</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var flight in Flights)
+            {
+                <tr>
+                    <td>@flight.Number</td>
+                    <td>@flight.FlightDate</td>
+                    <td>@flight.FlightTime</td>
+                    <td>@flight.Carrier</td>
+                    <td>@flight.AirportTo</td>
+                </tr>
+            }
+            
+        </tbody>
+    </table>
+
+}
+
+@code {
+    private List<Flight> Flights;
+    protected override async Task OnInitializedAsync()
+    {
+        Flights = await _flightService.GetFlights();
+    }
+}
